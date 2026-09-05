@@ -1,6 +1,6 @@
 {
   "$comment": "SINGLE SOURCE OF TRUTH for the GreenAI pool-company offer (decided 2026-09-03). The MCP server (mcp/server.mjs) and the greenaidigital.com pages are both generated from / checked against this file. Change a price or a claim HERE first; a test in mcp/test/ fails if the live site disagrees.",
-  "version": "2026-09-03",
+  "version": "2026-09-05",
   "brand": {
     "company": "GreenAI Solutions",
     "legal": "Jaden Green, doing business as GreenAI Solutions",
@@ -172,5 +172,51 @@
   "proof": {
     "engine": "The same lead engine every agent runs on has a public test drive: 4 leads, 5 quotes, 1 held for approval, 0 messages to an unsubscribed address — and when the model wrote a price as 'custom', the price checker blocked it because it was not on the list.",
     "demo_business": "Saguaro Pool Care (fictional demo company used on this site)"
+  },
+  "alternatives": {
+    "$comment": "Public, sourced costs of the four OTHER ways a Phoenix pool company can answer its phone. Added 2026-09-05 for instead.html (the comparison page). Rule: every figure in this block carries a public source URL, and siteCheck allows these dollar figures on the site because of it. Do not add a number here you cannot link.",
+    "options": [
+      {
+        "id": "voicemail",
+        "label": "Voicemail",
+        "usd_month_low": 0,
+        "usd_month_high": 0,
+        "breaks": "Takes no price, books nothing; the caller dials the next company while the greeting plays.",
+        "sources": []
+      },
+      {
+        "id": "owner_truck",
+        "label": "The owner, answering from the truck",
+        "usd_month_low": 0,
+        "usd_month_high": 0,
+        "breaks": "Does not scale and never gets a day off; the missed calls arrive while he is already on a call or under a heater panel.",
+        "sources": []
+      },
+      {
+        "id": "answering_service",
+        "label": "A live answering service",
+        "usd_month_low": 150,
+        "usd_month_high": 400,
+        "usd_per_minute_low": 0.75,
+        "usd_per_minute_high": 2.0,
+        "breaks": "Takes a message; cannot quote from your price list and has never seen a cartridge filter. Metered plans cost more in a busy week.",
+        "sources": [
+          "https://www.housecallpro.com/resources/how-much-does-an-answering-service-cost/",
+          "https://www.nextiva.com/blog/answering-service-cost.html"
+        ]
+      },
+      {
+        "id": "office_hire",
+        "label": "A part-time office person",
+        "usd_month_part_time": 1900,
+        "usd_month_full_time": 3400,
+        "wage_hourly_mean": 19.63,
+        "wage_basis": "Receptionists and information clerks, Phoenix-Mesa-Chandler, mean hourly wage, BLS OEWS May 2025. Monthly figures are that wage times hours, plus payroll tax — matching the human_comparison figures already on the agent pages.",
+        "breaks": "The desk is empty evenings, weekends, holidays, sick days, and the weeks after they quit.",
+        "sources": [
+          "https://www.bls.gov/regions/west/news-release/occupationalemploymentandwages_phoenix.htm"
+        ]
+      }
+    ]
   }
 }

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Route Ledger — what your pool route is worth | GreenAI Solutions</title>
+  <meta name="description" content="Put your own numbers in: pools on route, what you charge, leads a week, repairs quoted. The Route Ledger shows what the route earns, what a slow callback costs, and what the three AI employees cost against it. Your numbers, nothing invented." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=21" />
+  <link rel="stylesheet" href="visuals.css?v=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="canonical" href="https://greenaidigital.com/ledger.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://greenaidigital.com/ledger.html" />
+  <meta property="og:title" content="The Route Ledger — what your pool route is worth" />
+  <meta property="og:description" content="Your pools, your prices, your leads. The ledger does the multiplication and shows the three prices against it." />
+  <meta property="og:image" content="https://greenaidigital.com/og-card.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Route Ledger — what your pool route is worth" />
+  <meta name="twitter:description" content="Your numbers, multiplied. Nothing invented." />
+  <meta name="twitter:image" content="https://greenaidigital.com/og-card.jpg" />
+
+  <style>
+    /* ==========================================================================
+       THE ROUTE LEDGER — the site's first tool. An owner types his own route in
+       and the page does the arithmetic he has never sat down and done.
+       Rule for this page: every output is HIS input multiplied. We supply no
+       close rate, no lift, no "clients see". The only GreenAI numbers on the
+       page are our three prices.
+       Palette carried from the homepage: deep end #072E37, aqua #3FD0C3, gold.
+       ========================================================================== */
+    :root { --deep:#072E37; --deep-2:#0A3F4A; --aqua:#3FD0C3; --plaster:#F5F7F6; }
+
+    .lh { position:relative; background:linear-gradient(170deg,#050b07 0%,#072E37 58%,#0A3F4A 100%); color:#fff; padding:8rem 0 3.2rem; overflow:hidden; }
+    .lh::after { content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:linear-gradient(90deg,transparent,rgba(63,208,195,.5),transparent); }
+    .lh__wave { position:absolute; inset:auto 0 0 0; height:180px; width:100%; opacity:.5; pointer-events:none; }
+    .lh > .container { position:relative; z-index:1; }
+    .lh .section-label { color:var(--aqua); }
+    .lh h1 { margin:.7rem 0 1rem; color:#fff; font-size:clamp(2.3rem,4.6vw,3.9rem); line-height:1.03; letter-spacing:-.035em; max-width:16ch; }
+    .lh h1 em { font-style:italic; color:#e7c85f; }
+    .lh p.lede { max-width:56ch; color:rgba(255,255,255,.82); font-size:1.06rem; line-height:1.7; margin:0; }
+
+    /* ---- the desk: inputs left, ledger right ------------------------------- */
+    .desk { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:2.2rem; align-items:start; }
+    @media (max-width:940px) { .desk { grid-template-columns:1fr; gap:1.6rem; } }
+
+    .pad { background:#fff; border:1px solid rgba(7,46,55,.14); border-radius:22px; padding:1.8rem 1.7rem 1.5rem; box-shadow:0 18px 45px rgba(6,31,16,.08); }
+    .pad h2 { margin:0 0 .3rem; font-size:1.28rem; letter-spacing:-.02em; }
+    .pad .hint { margin:0 0 1.5rem; font-size:.88rem; color:#5b6b64; line-height:1.6; }
+
+    .fld { margin-bottom:1.25rem; }
+    .fld:last-child { margin-bottom:.4rem; }
+    .fld label { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; font:600 .82rem/1.4 Inter,sans-serif; color:#0d2c1c; margin-bottom:.5rem; }
+    .fld label b { font:800 1.02rem/1 Inter,sans-serif; color:var(--deep); font-variant-numeric:tabular-nums; }
+    .fld input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:100px; background:linear-gradient(90deg,var(--aqua) var(--pct,40%), rgba(7,46,55,.13) var(--pct,40%)); outline:none; }
+    .fld input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--deep); box-shadow:0 2px 8px rgba(7,46,55,.3); cursor:grab; }
+    .fld input[type=range]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:#fff; border:3px solid var(--deep); box-shadow:0 2px 8px rgba(7,46,55,.3); cursor:grab; }
+    .fld input[type=range]:focus-visible { box-shadow:0 0 0 3px rgba(63,208,195,.45); }
+    .fld .sub { margin:.45rem 0 0; font-size:.78rem; color:#6b7a73; line-height:1.5; }
+
+    /* ---- the ledger sheet -------------------------------------------------- */
+    .sheet { position:sticky; top:96px; background:var(--deep); color:#fff; border-radius:22px; overflow:hidden; border:1px solid rgba(63,208,195,.28); box-shadow:0 26px 60px rgba(5,25,20,.35); }
+    @media (max-width:940px) { .sheet { position:static; } }
+    .sheet__top { padding:1.5rem 1.7rem 1.3rem; border-bottom:1px solid rgba(255,255,255,.1); }
+    .sheet__top span { display:block; font:700 .68rem/1 Inter,sans-serif; letter-spacing:.18em; text-transform:uppercase; color:var(--aqua); }
+    .sheet__big { display:block; margin:.65rem 0 .2rem; font-family:'Playfair Display',serif; font-size:clamp(2.9rem,6.5vw,4.3rem); line-height:.9; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+    /* must out-specify `.sheet__top span` above, which sets the uppercase kicker style */
+    .sheet__top .sheet__cap { display:block; margin-top:.75rem; font:400 .86rem/1.55 Inter,sans-serif; letter-spacing:0; text-transform:none; color:rgba(255,255,255,.72); }
+    .rows { list-style:none; margin:0; padding:.5rem 1.7rem 1.2rem; }
+    .rows li { display:flex; align-items:baseline; justify-content:space-between; gap:1.2rem; padding:.85rem 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .rows li:last-child { border-bottom:0; }
+    .rows .k { font-size:.87rem; color:rgba(255,255,255,.76); line-height:1.5; }
+    .rows .k i { display:block; font-style:normal; font-size:.74rem; color:rgba(255,255,255,.45); margin-top:.15rem; }
+    .rows .v { flex:none; font:800 1.18rem/1 Inter,sans-serif; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+    .rows .v.warn { color:#FFB43C; }
+    .rows .v.good { color:var(--aqua); }
+    .sheet__foot { padding:1.3rem 1.7rem 1.6rem; background:rgba(0,0,0,.22); border-top:1px solid rgba(255,255,255,.1); }
+    .sheet__foot p { margin:0 0 1rem; font-size:.84rem; line-height:1.6; color:rgba(255,255,255,.78); }
+    .sheet__foot .btn { width:100%; justify-content:center; }
+
+    /* ---- the three, priced against the ledger ------------------------------ */
+    .three { display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; margin-top:1.4rem; }
+    @media (max-width:760px) { .three { grid-template-columns:1fr; } }
+    .three a { display:block; padding:1.1rem 1.2rem; border-radius:16px; border:1px solid rgba(7,46,55,.14); background:#fff; text-decoration:none; transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s; }
+    .three a:hover { transform:translateY(-4px); box-shadow:0 18px 40px rgba(6,31,16,.12); border-color:var(--aqua); }
+    .three b { display:block; font:800 1.05rem/1 Inter,sans-serif; letter-spacing:.04em; color:var(--deep); }
+    .three span { display:block; margin-top:.4rem; font-size:.83rem; color:#5b6b64; line-height:1.5; }
+    .three u { display:block; margin-top:.7rem; text-decoration:none; font:800 1.35rem/1 Inter,sans-serif; color:#0d2c1c; font-variant-numeric:tabular-nums; }
+    .three u small { font:600 .78rem/1 Inter,sans-serif; color:#6b7a73; }
+
+    /* ---- honesty block ----------------------------------------------------- */
+    .honest { border-left:3px solid var(--aqua); padding:.2rem 0 .2rem 1.2rem; margin:2.4rem 0 0; }
+    .honest h3 { margin:0 0 .6rem; font-size:1.02rem; letter-spacing:-.01em; }
+    .honest p { margin:0 0 .7rem; font-size:.92rem; line-height:1.7; color:#4a5b54; max-width:62ch; }
+    .honest p:last-child { margin-bottom:0; }
+  </style>
+</head>
+<body>
+  <a href="#desk" class="skip-link">Skip to main content</a>
+  <a href="#crew" class="skip-link">Skip to main content</a>
+
+  <nav class="nav transparent" id="main-nav" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="GreenAI Solutions Team home">
+          <div class="nav__logo-icon"><img src="logo-mark.png" alt="GreenAI Solutions Team crest" width="40" height="40" loading="eager" decoding="async"/></div>
+          <div class="nav__logo-text">
+            <span class="nav__logo-name">Green<span style="color:#D4AF37">AI</span></span>
+            <span class="nav__logo-sub">Solutions Team</span>
+          </div>
+        </a>
+
+        <ul class="nav__links" role="list">
+          <li><a href="index.html"    class="nav__link" data-page="index.html">Home</a></li>
+          <li class="nav__dropdown nav__dropdown--gold"><a href="index.html#crew" class="nav__link" data-page="crew">The Crew <span class="nav__caret" aria-hidden="true">▾</span></a><ul class="nav__submenu" role="list"><li><a href="net.html">NET &mdash; catches every lead &middot; $497/mo</a></li><li><a href="balance.html">BALANCE &mdash; keeps every customer &middot; $347/mo</a></li><li><a href="pump.html">PUMP &mdash; keeps the money moving &middot; $297/mo</a></li><li class="nav__submenu-label">See it work</li><li><a href="catch.html">Watch it catch a lead</a></li><li><a href="call.html">Hear it as your company</a></li><li><a href="ledger.html">Run your route numbers</a></li><li><a href="instead.html">Five ways to answer the phone</a></li><li><a href="faq.html">Questions</a></li></ul></li>
+          <li><a href="about.html"    class="nav__link" data-page="about.html">About</a></li>
+          <li class="nav__dropdown nav__dropdown--right"><a href="contact.html" class="nav__link" data-page="contact.html">Contact <span class="nav__caret" aria-hidden="true">▾</span></a><ul class="nav__submenu" role="list"><li><a href="tel:4807980753" style="display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(480) 798-0753</a></li><li><a href="mailto:jaden@greenaidigital.com" style="display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>jaden@greenaidigital.com</a></li></ul></li>
+        </ul>
+
+        <a href="catch.html" class="btn btn-primary nav__cta">Watch it catch a lead</a>
+
+        <button class="nav__hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <ul class="nav__mobile" role="list">
+        <li><a href="index.html"    class="nav__link" data-page="index.html">Home</a></li>
+        <li class="nav__dropdown nav__dropdown--gold"><a href="index.html#crew" class="nav__link" data-page="crew">The Crew</a><ul class="nav__submenu" role="list"><li><a href="net.html">NET &mdash; catches every lead &middot; $497/mo</a></li><li><a href="balance.html">BALANCE &mdash; keeps every customer &middot; $347/mo</a></li><li><a href="pump.html">PUMP &mdash; keeps the money moving &middot; $297/mo</a></li><li class="nav__submenu-label">See it work</li><li><a href="catch.html">Watch it catch a lead</a></li><li><a href="call.html">Hear it as your company</a></li><li><a href="ledger.html">Run your route numbers</a></li><li><a href="instead.html">Five ways to answer the phone</a></li><li><a href="faq.html">Questions</a></li></ul></li>
+        <li><a href="about.html"    class="nav__link" data-page="about.html">About</a></li>
+        <li class="nav__dropdown nav__dropdown--right"><a href="contact.html" class="nav__link" data-page="contact.html">Contact <span class="nav__caret" aria-hidden="true">▾</span></a><ul class="nav__submenu" role="list"><li><a href="tel:4807980753" style="display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(480) 798-0753</a></li><li><a href="mailto:jaden@greenaidigital.com" style="display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>jaden@greenaidigital.com</a></li></ul></li>
+        <li style="padding:.5rem 1rem"><a href="catch.html" class="btn btn-primary" style="width:100%;justify-content:center">Watch it catch a lead</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ============================================================ -->
+  <header class="lh">
+    <svg class="lh__wave" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 108 C 180 62, 300 150, 480 108 S 780 62, 960 104 S 1260 150, 1440 96 L1440 180 L0 180 Z" fill="rgba(63,208,195,.10)"/>
+      <path d="M0 132 C 200 96, 340 168, 520 134 S 820 92, 1010 130 S 1290 168, 1440 126 L1440 180 L0 180 Z" fill="rgba(63,208,195,.07)"/>
+    </svg>
+    <div class="container">
+      <span class="section-label">The Route Ledger</span>
+      <h1>Your route, <em>added up.</em></h1>
+      <p class="lede">Move seven sliders to match your company. The page does the arithmetic most owners never sit down and do &mdash; what the route earns, what one cancel costs, what the leads you never got back to were worth, and what three AI employees cost measured in pools. Every number below is <strong style="color:#fff">your</strong> number multiplied. We supply nothing but our three prices.</p>
+    </div>
+  </header>
+
+  <!-- ===== THE DESK ======================================================== -->
+  <section class="section" id="desk">
+    <div class="container">
+      <div class="desk">
+
+        <!-- inputs -->
+        <div class="pad">
+          <h2>Your company</h2>
+          <p class="hint">Nothing is sent anywhere. This runs in your browser and forgets you when you close the tab.</p>
+
+          <div class="fld">
+            <label for="f-pools">Pools on your route <b><span id="v-pools">180</span></b></label>
+            <input type="range" id="f-pools" min="20" max="600" step="5" value="180" />
+          </div>
+
+          <div class="fld">
+            <label for="f-price">What you charge a pool, a month <b>$<span id="v-price">130</span></b></label>
+            <input type="range" id="f-price" min="80" max="260" step="5" value="130" />
+            <p class="sub">Weekly service around the valley advertises roughly $110&ndash;$150 a month. Set yours.</p>
+          </div>
+
+          <div class="fld">
+            <label for="f-leads">New leads in a week <b><span id="v-leads">8</span></b></label>
+            <input type="range" id="f-leads" min="0" max="40" step="1" value="8" />
+            <p class="sub">Calls, texts, website forms, Google, Thumbtack, Angi, Yelp &mdash; every stranger asking about service.</p>
+          </div>
+
+          <div class="fld">
+            <label for="f-reach">Out of every 10, how many do you get back to before they book someone else? <b><span id="v-reach">6</span> of 10</b></label>
+            <input type="range" id="f-reach" min="0" max="10" step="1" value="6" />
+          </div>
+
+          <div class="fld">
+            <label for="f-sign">If you had reached the rest, how many would it take to sign one? <b>1 in <span id="v-sign">4</span></b></label>
+            <input type="range" id="f-sign" min="2" max="10" step="1" value="4" />
+            <p class="sub">Your guess, not ours. We will never put a close rate on your business.</p>
+          </div>
+
+          <div class="fld">
+            <label for="f-repairs">Repair quotes you send in a month <b><span id="v-repairs">6</span></b></label>
+            <input type="range" id="f-repairs" min="0" max="40" step="1" value="6" />
+          </div>
+
+          <div class="fld">
+            <label for="f-ticket">Average repair ticket <b>$<span id="v-ticket">450</span></b></label>
+            <input type="range" id="f-ticket" min="100" max="3000" step="25" value="450" />
+          </div>
+        </div>
+
+        <!-- ledger -->
+        <!-- Every dollar figure in the sheet below is a placeholder, recomputed from the visitor's own sliders on load. -->
+        <!-- demo-prices -->
+        <div class="sheet" aria-live="polite">
+          <div class="sheet__top">
+            <span>Your route, a year</span>
+            <b class="sheet__big" id="o-year">$280,800</b>
+            <span class="sheet__cap">Recurring service only. Repairs are counted separately below.</span>
+          </div>
+
+          <ul class="rows" role="list">
+            <li><span class="k">The route, a month</span><span class="v" id="o-month">$23,400</span></li>
+            <li><span class="k">One pool, for a year<i>What a single cancel costs at your price</i></span><span class="v" id="o-onepool">$1,560</span></li>
+            <li><span class="k">New leads reaching you in a year</span><span class="v" id="o-leadyear">416</span></li>
+            <li><span class="k">The ones you never got back to<i>At 6 of 10 reached</i></span><span class="v warn" id="o-missed">166</span></li>
+            <li><span class="k">First-year service value of those, at 1 in 4<i>Your close guess &times; your price &times; 12 months</i></span><span class="v warn" id="o-lost">$64,896</span></li>
+            <li><span class="k">Repair work quoted in a year<i>Quotes sent, not jobs won &mdash; this is what is sitting on the table</i></span><span class="v" id="o-repair">$32,400</span></li>
+            <li><span class="k">All three AI employees<i>NET $497 &middot; BALANCE $347 &middot; PUMP $297, flat</i></span><span class="v good">$13,692<small style="display:block;font:600 .74rem/1 Inter,sans-serif;color:rgba(255,255,255,.5);margin-top:.2rem">$1,141 a month</small></span></li>
+            <li><span class="k">Which is the same as<i>Three employees, priced in pools</i></span><span class="v good" id="o-inpools">9 pools</span></li>
+          </ul>
+
+          <div class="sheet__foot">
+            <p>Every figure above is your own input multiplied out. The only numbers we brought are $497, $347 and $297.</p>
+            <a href="catch.html" class="btn btn-primary buy">Watch one get caught in 8 seconds</a>
+          </div>
+        </div>
+        <!-- /demo-prices -->
+
+      </div>
+
+      <!-- the three -->
+      <div class="three">
+        <a href="net.html">
+          <b style="color:#0d7a6f">NET</b>
+          <span>Catches every lead in 8 seconds and chases it day 1, 3 and 7.</span>
+          <u>$497<small> /mo</small></u>
+        </a>
+        <a href="balance.html">
+          <b style="color:#2f9c5e">BALANCE</b>
+          <span>Keeps the customers you already have &mdash; the cancels above.</span>
+          <u>$347<small> /mo</small></u>
+        </a>
+        <a href="pump.html">
+          <b style="color:#c07d13">PUMP</b>
+          <span>Chases the repair quotes on day 2, 5 and 10, then the invoice.</span>
+          <u>$297<small> /mo</small></u>
+        </a>
+      </div>
+
+      <div class="honest">
+        <h3>What this page will not do</h3>
+        <p>It will not tell you that you will win those leads. Nobody can, and any company that puts a percentage on your business before it has seen your business is guessing at you in public. The 1-in-4 above is <em>your</em> slider, and we would rather you drag it down than up.</p>
+        <p>It does not count repair jobs as money earned. Those are quotes sent &mdash; work sitting on a table that only turns into money if somebody follows up on day 2, day 5 and day 10. That is exactly the job PUMP has.</p>
+        <p>And it does not pretend the three employees replace you. They answer, quote from your price list, remind and chase. You still run the route.</p>
+      </div>
+    </div>
+  </section>
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo" aria-label="GreenAI home">
+            <div class="footer__logo-icon"><img src="logo-mark.png" alt="GreenAI" width="36" height="36" loading="lazy" decoding="async"/></div>
+            <span class="footer__logo-name">Green<span style="color:#D4AF37">AI</span> Solutions Team</span>
+          </a>
+          <p class="footer__tagline">Three AI employees for Phoenix-metro pool service companies. NET catches every lead, BALANCE keeps every customer, PUMP keeps the money moving. Month to month.</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.62)">Jaden Green, doing business as GreenAI Solutions<br/>Gilbert, Arizona</p>
+        </div>
+
+        <div>
+          <h5>Navigation</h5>
+          <ul class="footer__links" role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#crew">The crew</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">Questions &amp; Answers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="pay.html">Start</a></li>
+            <li><a href="testimonials.html">Past work</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>The crew</h5>
+          <ul class="footer__links" role="list">
+            <li><a href="net.html" style="color:#D4AF37;font-weight:600">NET &mdash; catches every lead &middot; $497/mo</a></li><li><a href="balance.html" style="color:#D4AF37;font-weight:600">BALANCE &mdash; keeps every customer &middot; $347/mo</a></li><li><a href="pump.html" style="color:#D4AF37;font-weight:600">PUMP &mdash; keeps the money moving &middot; $297/mo</a></li>
+            <li style="padding-top:.4rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)">See it work</li>
+            <li><a href="catch.html">Watch it catch a lead</a></li>
+            <li><a href="call.html">Hear it as your company</a></li>
+            <li><a href="demo.html">Hear it as your pool company</a></li>
+            <li><a href="ledger.html">Run your route numbers</a></li>
+            <li><a href="instead.html">Five ways to answer the phone</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Contact Us</h5>
+          <div class="footer__contact-item">
+            <div class="footer__contact-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div>
+              <a href="tel:4807980753" style="color:rgba(255,255,255,.65)">(480) 798-0753</a>
+            </div>
+          </div>
+          <div class="footer__contact-item">
+            <div class="footer__contact-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div>
+              <a href="mailto:jaden@greenaidigital.com" style="color:rgba(255,255,255,.65)">jaden@greenaidigital.com</a>
+            </div>
+          </div>
+          <div class="footer__contact-item">
+            <div class="footer__contact-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div>Gilbert, Arizona 85296</div>
+          </div>
+          <div class="footer__contact-item">
+            <div class="footer__contact-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            <div>
+              <div class="footer__contact-label" style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.68);margin-bottom:.2rem">Instagram</div>
+              <div><a href="https://instagram.com/GreenAI_solutions" target="_blank" rel="noopener" style="color:rgba(255,255,255,.65)">@GreenAI_solutions</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <span style="color:rgba(255,255,255,.25)">·</span>
+        <a href="terms.html">Terms of Service</a>
+        <span style="color:rgba(255,255,255,.25)">·</span>
+        <a href="agreement.html">Service Agreement</a>
+      </div>
+
+      <div class="footer__bottom">
+        <span>&copy; <span class="js-year">2026</span> Green<span style="color:#D4AF37">AI</span> Solutions Team. All rights reserved.</span>
+        <span class="footer__bottom-right">Built for pool companies. Gilbert, AZ.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=14"></script>
+  <!-- demo-prices -->
+  <script>
+  /* ---- THE ROUTE LEDGER -----------------------------------------------------
+     Pure arithmetic on the owner's own inputs. No claim of ours is computed
+     here; the only constants are the three published prices. ---------------- */
+  (function () {
+    var PRICE_ALL = 497 + 347 + 297;               // $1,141 a month, published
+    var usd0 = new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+    var num  = new Intl.NumberFormat('en-US');
+
+    var f = {
+      pools:   document.getElementById('f-pools'),
+      price:   document.getElementById('f-price'),
+      leads:   document.getElementById('f-leads'),
+      reach:   document.getElementById('f-reach'),
+      sign:    document.getElementById('f-sign'),
+      repairs: document.getElementById('f-repairs'),
+      ticket:  document.getElementById('f-ticket')
+    };
+    if (!f.pools) return;
+
+    function set(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+
+    function paint(input) {
+      var pct = (input.value - input.min) / (input.max - input.min) * 100;
+      input.style.setProperty('--pct', pct + '%');
+    }
+
+    function run() {
+      var pools   = +f.pools.value,
+          price   = +f.price.value,
+          leads   = +f.leads.value,
+          reach   = +f.reach.value,
+          sign    = +f.sign.value,
+          repairs = +f.repairs.value,
+          ticket  = +f.ticket.value;
+
+      // echo every slider back in its own label
+      set('v-pools', num.format(pools));
+      set('v-price', num.format(price));
+      set('v-leads', num.format(leads));
+      set('v-reach', reach);
+      set('v-sign', sign);
+      set('v-repairs', num.format(repairs));
+      set('v-ticket', num.format(ticket));
+      Object.keys(f).forEach(function (k) { paint(f[k]); });
+
+      var month     = pools * price;
+      var year      = month * 12;
+      var onePool   = price * 12;
+      var leadYear  = leads * 52;
+      var missed    = Math.round(leadYear * (10 - reach) / 10);
+      var wouldSign = missed / sign;                  // owner's own guess
+      var lost      = Math.round(wouldSign * price * 12);
+      var repairYr  = repairs * 12 * ticket;
+      var inPools   = price > 0 ? PRICE_ALL / price : 0;
+
+      set('o-year',     usd0.format(year));
+      set('o-month',    usd0.format(month));
+      set('o-onepool',  usd0.format(onePool));
+      set('o-leadyear', num.format(leadYear));
+      set('o-missed',   num.format(missed));
+      set('o-lost',     usd0.format(lost));
+      set('o-repair',   usd0.format(repairYr));
+      set('o-inpools',  (inPools < 10 ? inPools.toFixed(1) : Math.round(inPools)) + ' pools');
+
+      // captions that quote the owner's own settings back to him
+      var mCap = document.querySelector('#o-missed');
+      if (mCap) {
+        var i = mCap.closest('li').querySelector('.k i');
+        if (i) i.textContent = 'At ' + reach + ' of 10 reached';
+      }
+      var lCap = document.querySelector('#o-lost');
+      if (lCap) {
+        var j = lCap.closest('li').querySelector('.k i');
+        if (j) j.textContent = 'Your 1-in-' + sign + ' guess × ' + usd0.format(price) + ' × 12 months';
+        var label = lCap.closest('li').querySelector('.k');
+        if (label) label.childNodes[0].nodeValue = 'First-year service value of those, at 1 in ' + sign;
+      }
+    }
+
+    Object.keys(f).forEach(function (k) {
+      f[k].addEventListener('input', run);
+      f[k].addEventListener('change', run);
+    });
+    run();
+  })();
+  </script>
+  <!-- /demo-prices -->
+  <script src="checkout.js?v=8"></script>
+</body>
+</html>
